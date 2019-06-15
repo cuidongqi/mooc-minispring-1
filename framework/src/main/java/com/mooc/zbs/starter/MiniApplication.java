@@ -1,6 +1,7 @@
 package com.mooc.zbs.starter;
 
 import com.mooc.zbs.core.ClassScanner;
+import com.mooc.zbs.web.handler.HandlerManager;
 import com.mooc.zbs.web.server.TomcatServer;
 import org.apache.catalina.LifecycleException;
 
@@ -14,6 +15,7 @@ public class MiniApplication {
         try {
             tomcatServer.startServer();
             List<Class<?>> classList = ClassScanner.scanClasses(cls.getPackage().getName());
+            HandlerManager.resolveMappingHandler(classList);
             classList.forEach(it -> System.out.println(it.getName()));
         } catch (LifecycleException e) {
             e.printStackTrace();

@@ -1,7 +1,11 @@
 package com.mooc.zbs.web.servlet;
 
+import com.mooc.zbs.web.handler.HandlerManager;
+import com.mooc.zbs.web.handler.MappingHandler;
+
 import javax.servlet.*;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 public class DispatcherServlet implements Servlet {
     @Override
@@ -16,7 +20,20 @@ public class DispatcherServlet implements Servlet {
 
     @Override
     public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
-        res.getWriter().println("test");
+        for (MappingHandler mappingHandler : HandlerManager.mappingHandlerList) {
+            try {
+                if (mappingHandler.handle(req, res)) {
+                    return;
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
+        //res.getWriter().println("test");
     }
 
     @Override
