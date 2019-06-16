@@ -1,6 +1,8 @@
 package com.mooc.zbs.web.handler;
 
 
+import com.mooc.zbs.beans.BeanFactory;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +34,8 @@ public class MappingHandler {
             parameters[i] = req.getParameter(args[i]);
         }
 
-        Object ct1 = controller.newInstance();
+        //Object ct1 = controller.newInstance();
+        Object ct1 = BeanFactory.getBean(controller);
         Object response = method.invoke(ct1, parameters);
         res.getWriter().println(response.toString());
         return true;
